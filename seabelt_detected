@@ -1,0 +1,13 @@
+rule seatbelt_detected {
+ meta:
+   description = "Rule for detecting Seatbelt"
+   author = "Dimitrios Bougioukas"
+ strings:
+   $class1 = "WMIUtil"
+   $class2 = ""
+   $class3 = "SecurityUtil"
+   $class4 = "MiscUtil"
+   $dotnetMagic = "BSJB" ascii
+ condition:
+   (uint16(0) == 0x5A4D and uint16(uint32(0x3c)) == 0x4550) and $dotnetMagic and 4 of them
+}
