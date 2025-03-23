@@ -1,0 +1,34 @@
+title: Notepad Calling Suspicious Child Process
+id: dcddc6ad-dbfb-40eb-82ca-d431a52e99bf
+status: experimental
+description: Detects notepad.exe spawning a suspicious child process
+author: Dimitrios Bougioukas
+date: 2023/31/08
+modified: 2023/31/08
+tags:
+    - attack.defense_evasion
+    - attack.t1036
+    - attack.t1218
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\notepad.exe'
+        Image|endswith:
+            # Add more suspicious LOLBins
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\cmd.exe'
+            - '\mshta.exe'
+            - '\cscript.exe'
+            - '\wscript.exe'
+            - '\taskkill.exe'
+            - '\regsvr32.exe'
+            - '\rundll32.exe'
+            # - '\csc.exe'   # https://app.any.run/tasks/f420d295-0457-4e9b-9b9e-6732be227583/
+            - '\calc.exe'  # https://app.any.run/tasks/f420d295-0457-4e9b-9b9e-6732be227583/
+    condition: selection
+falsepositives:
+    - Unknown
+level: high
